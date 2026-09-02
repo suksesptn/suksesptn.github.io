@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal Sukses PTN - SMA Pesantren Unggul Al Bayan</title>
+    
+    <!-- Google Fonts: Poppins -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- Konfigurasi Tema -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Poppins', 'sans-serif'] },
+                    colors: {
+                        primary: '#059669', // Emerald 600
+                        primaryDark: '#047857', 
+                        background: '#F8FAFC', 
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        html { scroll-behavior: smooth; }
+        .card-hover { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+        .card-hover:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 25px -5px rgba(5, 150, 105, 0.15), 0 8px 10px -6px rgba(5, 150, 105, 0.1);
+        }
+    </style>
+</head>
+<body class="bg-background text-slate-800 antialiased min-h-screen flex flex-col">
+
+    <!-- Header / Navbar -->
+    <header class="bg-white/90 backdrop-blur-md shadow-sm sticky top-0 z-50 border-b border-slate-100">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="bg-primary text-white p-2 rounded-lg shadow-sm">
+                    <i data-lucide="graduation-cap" class="w-6 h-6"></i>
+                </div>
+                <div>
+                    <h1 class="text-lg sm:text-xl font-bold text-slate-900 leading-tight">Portal Sukses PTN</h1>
+                    <p class="text-xs sm:text-sm text-slate-500 font-medium">SMA Pesantren Unggul Al Bayan</p>
+                </div>
+            </div>
+            
+            <!-- Tombol Login -->
+            <a href="login.html" class="flex items-center gap-2 text-sm font-semibold text-primary bg-emerald-50 px-4 py-2 rounded-full hover:bg-primary hover:text-white transition-all duration-300">
+                <i data-lucide="log-in" class="w-4 h-4"></i>
+                <span>Login</span>
+            </a>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-grow max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 w-full">
+        
+        <!-- Hero Section -->
+        <div class="text-center mb-10 sm:mb-14">
+            <h2 class="text-2xl sm:text-3xl font-bold text-slate-900 mb-3">
+                Selamat Datang, Pejuang PTN! 🚀
+            </h2>
+            <p class="text-slate-600 max-w-2xl mx-auto text-sm sm:text-base leading-relaxed">
+                Pantau perkembangan akademik, analisis peluang lolos, dan kelola program bimbingan di satu portal yang terintegrasi.
+            </p>
+        </div>
+
+        <!-- Grid Menu Cards -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
+
+            <!-- Card 1: Hasil Tryout UTBK-SNBT -->
+            <a href="tryout-utbk.html" class="card-hover bg-white rounded-2xl p-6 border border-slate-100 shadow-sm flex flex-col items-start gap-4 group">
+                <div class="bg-blue-50 text-blue-600 p-3 rounded-xl group-hover:bg-blue-600 group-hover:text-white transition-colors duration-300">
+                    <i data-lucide="trending-up" class="w-7 h-7"></i>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold text-slate-900 mb-1">Hasil Tryout UTBK-SNBT</h3>
+                    <p class="text-sm text-slate-500 leading-relaxed">Pantau skor tryout terbaru, riwayat nilai, dan grafik perkembangan kemampuan secara berkala.</p>
+                </div>
+                <div class="mt-auto pt-4 flex items-center text-sm font-medium text-blue-600 group-hover:translate-x-1 transition-transform">
+                    Lihat Detail <i data-lucide="arrow-right" class="w-4 h-4 ml-1"></i>
+                </div>
+            </a>
+
+            <!-- Card 2: Hasil Tryout TKA -->
+            <a href="tryout-tka.html" class="card-hover bg-white rounded-2xl p-6 border border-slate-100 shadow-sm flex flex-col items-start gap-4 group">
+                <div class="bg-purple-50 text-purple-600 p-3 rounded-xl group-hover:bg-purple-600 group-hover:text-white transition-colors duration-300">
+                    <i data-lucide="book-open" class="w-7 h-7"></i>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold text-slate-900 mb-1">Hasil Tryout TKA</h3>
+                    <p class="text-sm text-slate-500 leading-relaxed">Lihat skor terbaru dan grafik perkembangan nilai mata pelajaran wajib serta pilihan.</p>
+                </div>
+                <div class="mt-auto pt-4 flex items-center text-sm font-medium text-purple-600 group-hover:translate-x-1 transition-transform">
+                    Lihat Detail <i data-lucide="arrow-right" class="w-4 h-4 ml-1"></i>
+                </div>
+            </a>
+
+            <!-- Card 3: Analisis SNBP -->
+            <a href="analisis-snbp.html" class="card-hover bg-white rounded-2xl p-6 border border-slate-100 shadow-sm flex flex-col items-start gap-4 group">
+                <div class="bg-emerald-50 text-emerald-600 p-3 rounded-xl group-hover:bg-emerald-600 group-hover:text-white transition-colors duration-300">
+                    <i data-lucide="award" class="w-7 h-7"></i>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold text-slate-900 mb-1">Analisis SNBP</h3>
+                    <p class="text-sm text-slate-500 leading-relaxed">Analisis peluang lolos berdasarkan data kelulusan tahun sebelumnya dan proyeksi nilai rapor Anda.</p>
+                </div>
+                <div class="mt-auto pt-4 flex items-center text-sm font-medium text-emerald-600 group-hover:translate-x-1 transition-transform">
+                    Lihat Detail <i data-lucide="arrow-right" class="w-4 h-4 ml-1"></i>
+                </div>
+            </a>
+
+            <!-- Card 4: Analisis SNBT -->
+            <a href="analisis-snbt.html" class="card-hover bg-white rounded-2xl p-6 border border-slate-100 shadow-sm flex flex-col items-start gap-4 group">
+                <div class="bg-orange-50 text-orange-600 p-3 rounded-xl group-hover:bg-orange-600 group-hover:text-white transition-colors duration-300">
+                    <i data-lucide="target" class="w-7 h-7"></i>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold text-slate-900 mb-1">Analisis SNBT</h3>
+                    <p class="text-sm text-slate-500 leading-relaxed">Simulasi target skor UTBK berdasarkan data kelulusan tahun sebelumnya untuk jurusan yang Anda incar.</p>
+                </div>
+                <div class="mt-auto pt-4 flex items-center text-sm font-medium text-orange-600 group-hover:translate-x-1 transition-transform">
+                    Lihat Detail <i data-lucide="arrow-right" class="w-4 h-4 ml-1"></i>
+                </div>
+            </a>
+
+            <!-- Card 5: Cek Passing Grade -->
+            <a href="passing-grade.html" class="card-hover bg-white rounded-2xl p-6 border border-slate-100 shadow-sm flex flex-col items-start gap-4 group">
+                <div class="bg-rose-50 text-rose-600 p-3 rounded-xl group-hover:bg-rose-600 group-hover:text-white transition-colors duration-300">
+                    <i data-lucide="calculator" class="w-7 h-7"></i>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold text-slate-900 mb-1">Cek Passing Grade</h3>
+                    <p class="text-sm text-slate-500 leading-relaxed">Database estimasi nilai aman dan statistik peminat berbagai jurusan PTN di seluruh Indonesia.</p>
+                </div>
+                <div class="mt-auto pt-4 flex items-center text-sm font-medium text-rose-600 group-hover:translate-x-1 transition-transform">
+                    Lihat Detail <i data-lucide="arrow-right" class="w-4 h-4 ml-1"></i>
+                </div>
+            </a>
+
+            <!-- Card 6: Presensi Guru -->
+            <a href="presensi-guru.html" class="card-hover bg-white rounded-2xl p-6 border border-slate-100 shadow-sm flex flex-col items-start gap-4 group">
+                <div class="bg-slate-100 text-slate-700 p-3 rounded-xl group-hover:bg-slate-800 group-hover:text-white transition-colors duration-300">
+                    <i data-lucide="clipboard-check" class="w-7 h-7"></i>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold text-slate-900 mb-1">Presensi Guru</h3>
+                    <p class="text-sm text-slate-500 leading-relaxed">Area khusus guru untuk mengisi presensi dan memantau kehadiran program Sukses PTN.</p>
+                </div>
+                <div class="mt-auto pt-4 flex items-center text-sm font-medium text-slate-700 group-hover:translate-x-1 transition-transform">
+                    Isi Presensi <i data-lucide="arrow-right" class="w-4 h-4 ml-1"></i>
+                </div>
+            </a>
+
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-slate-100 mt-auto">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+            <div class="flex flex-col sm:flex-row justify-between items-center gap-4">
+                <p class="text-sm text-slate-500 text-center sm:text-left">
+                    &copy; <span id="year"></span> SMA Pesantren Unggul Al Bayan. All rights reserved.
+                </p>
+                <div class="flex items-center gap-4 text-sm text-slate-500 font-medium">
+                    <span>Tim Sukses PTN Al Bayan</span>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Inisialisasi Lucide Icons
+        lucide.createIcons();
+        // Set tahun otomatis di footer
+        document.getElementById('year').textContent = new Date().getFullYear();
+    </script>
+</body>
+</html>
