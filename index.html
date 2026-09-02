@@ -48,9 +48,9 @@
                     <h2 class="text-lg font-semibold text-slate-900">Informasi Presensi</h2>
                 </div>
 
-                <div id="loadBanner" class="mb-5 flex items-center gap-3 text-sm text-slate-600 bg-emerald-50 border border-emerald-200 rounded-xl px-4 py-3">
-                    <svg id="loadSpinner" class="animate-spin h-4 w-4 text-primary" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
-                    <span id="loadBannerText">Memuat data guru & siswa...</span>
+                <!-- Banner Status -->
+                <div id="loadBanner" class="mb-5 hidden flex items-center gap-3 text-sm bg-emerald-50 border border-emerald-200 rounded-xl px-4 py-3">
+                    <span id="loadBannerText" class="text-emerald-700">Memuat data guru & siswa...</span>
                 </div>
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
@@ -81,14 +81,14 @@
 
                     <div id="field_mapel">
                         <label class="block text-sm font-semibold text-slate-700 mb-2">Mata Pelajaran</label>
-                        <select id="mapel" onchange="filterGuru()" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-primary focus:ring-2 focus:ring-emerald-200 outline-none bg-slate-50">
+                        <select id="mapel" onchange="filterGuru()" disabled class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-primary focus:ring-2 focus:ring-emerald-200 outline-none bg-slate-50">
                             <option value="">-- Pilih Mapel --</option>
                         </select>
                     </div>
 
                     <div id="guru_select_wrap">
                         <label class="block text-sm font-semibold text-slate-700 mb-2">Nama Guru <span class="text-rose-500">*</span></label>
-                        <select id="guru" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-primary focus:ring-2 focus:ring-emerald-200 outline-none bg-slate-50">
+                        <select id="guru" disabled class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-primary focus:ring-2 focus:ring-emerald-200 outline-none bg-slate-50">
                             <option value="">-- Pilih Guru --</option>
                         </select>
                     </div>
@@ -100,7 +100,7 @@
 
                     <div id="field_kelas" class="sm:col-span-2">
                         <label class="block text-sm font-semibold text-slate-700 mb-2">Kelas</label>
-                        <select id="kelas" onchange="loadSiswa()" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-primary focus:ring-2 focus:ring-emerald-200 outline-none bg-slate-50">
+                        <select id="kelas" onchange="loadSiswa()" disabled class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-primary focus:ring-2 focus:ring-emerald-200 outline-none bg-slate-50">
                             <option value="">-- Pilih Kelas --</option>
                         </select>
                     </div>
@@ -156,7 +156,7 @@
             </div>
         </form>
 
-        <p class="text-center text-xs text-slate-400 mt-8">v5 • Tim Sukses PTN Al Bayan</p>
+        <p class="text-center text-xs text-slate-400 mt-8">v6 • Tim Sukses PTN Al Bayan</p>
     </main>
 
     <!-- Notification -->
@@ -172,7 +172,7 @@
     </div>
 
     <script>
-        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbydQLyp6LkW3Nvu1kyQ9v_n0FZfi-dAAzsoCCXEzUXZ18sUcYoljAmXxaPR5YTAK41QfQ/exec';
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbw-Z7Nd1x4OTB-_qOTKEcriyelXm7iXFrvty6xHjHMohGvoScKthLppd_rhsCc6RMev6Q/exec';
         
         const JENIS_MAP = {
             'TKA': { program: 'TKA', mode: 'checklist' },
@@ -186,37 +186,61 @@
         };
 
         let masterData = { guru: [], siswa: [] };
-        let currentMode = 'checklist';
+        let dataLoaded = false;
 
         function icons() { try { if (window.lucide) lucide.createIcons(); } catch(e) {} }
 
-        // Load data once on page load
+        // Load data on page load
         document.addEventListener('DOMContentLoaded', async function() {
-            const banner = document.getElementById('loadBanner');
-            const text = document.getElementById('loadBannerText');
-            banner.classList.remove('hidden');
-            
-            try {
-                const res = await fetch(SCRIPT_URL + '?action=getMasterData');
-                masterData = await res.json();
-                banner.classList.add('hidden');
-            } catch (err) {
-                text.textContent = 'Gagal memuat data. Refresh halaman untuk coba lagi.';
-                text.classList.add('text-rose-600');
-            }
-            
             document.getElementById('tanggal').valueAsDate = new Date();
+            await loadMasterData();
             icons();
         });
 
+        async function loadMasterData() {
+            const banner = document.getElementById('loadBanner');
+            const bannerText = document.getElementById('loadBannerText');
+            
+            banner.classList.remove('hidden');
+            banner.className = 'mb-5 flex items-center gap-3 text-sm bg-blue-50 border border-blue-200 rounded-xl px-4 py-3';
+            bannerText.className = 'text-blue-700';
+            bannerText.textContent = 'Memuat data guru & siswa...';
+            
+            try {
+                const response = await fetch(SCRIPT_URL + '?action=getMasterData');
+                if (!response.ok) throw new Error('HTTP ' + response.status);
+                
+                const result = await response.json();
+                
+                if (result.status === 'success') {
+                    masterData = result;
+                    dataLoaded = true;
+                    banner.className = 'mb-5 hidden';
+                } else {
+                    throw new Error(result.message || 'Data kosong');
+                }
+            } catch (error) {
+                console.error('Load data error:', error);
+                banner.className = 'mb-5 flex items-center gap-3 text-sm bg-rose-50 border border-rose-200 rounded-xl px-4 py-3';
+                bannerText.className = 'text-rose-700 font-medium';
+                bannerText.innerHTML = 'Gagal memuat data. <button type="button" onclick="loadMasterData()" class="underline font-bold">Coba lagi</button>';
+            }
+        }
+
         function show(id, visible) {
-            document.getElementById(id).classList.toggle('hidden', !visible);
+            const el = document.getElementById(id);
+            if (visible) el.classList.remove('hidden');
+            else el.classList.add('hidden');
         }
 
         function switchJenis() {
+            if (!dataLoaded) {
+                showNotification('info', 'Info', 'Data sedang dimuat. Silakan tunggu sebentar...');
+                return;
+            }
+            
             const jenis = document.getElementById('jenis').value;
             const cfg = JENIS_MAP[jenis] || { program: '', mode: 'manual' };
-            currentMode = cfg.mode;
 
             if (cfg.mode === 'checklist') {
                 show('field_mapel', true);
@@ -247,14 +271,19 @@
         function updateMapelDropdown(program) {
             const select = document.getElementById('mapel');
             select.innerHTML = '<option value="">-- Pilih Mapel --</option>';
+            select.disabled = false;
+            
             const filtered = masterData.guru.filter(g => g.program === program);
             const unique = [...new Set(filtered.map(g => g.mapel).filter(Boolean))].sort();
+            
             unique.forEach(m => {
                 select.innerHTML += `<option value="${m}">${m}</option>`;
             });
         }
 
         function filterGuru() {
+            if (!dataLoaded) return;
+            
             const jenis = document.getElementById('jenis').value;
             const cfg = JENIS_MAP[jenis] || { program: '' };
             const mapelSelected = document.getElementById('mapel').value;
@@ -264,6 +293,8 @@
             if (mapelSelected) list = list.filter(g => g.mapel === mapelSelected);
             
             select.innerHTML = '<option value="">-- Pilih Guru --</option>';
+            select.disabled = false;
+            
             const seen = new Set();
             list.sort((a,b) => a.nama.localeCompare(b.nama)).forEach(g => {
                 let label = g.nama;
@@ -278,19 +309,27 @@
         function updateKelasDropdown(program) {
             const select = document.getElementById('kelas');
             select.innerHTML = '<option value="">-- Pilih Kelas --</option>';
+            select.disabled = false;
+            
             const unique = [...new Set(masterData.siswa.filter(s => s.program === program).map(s => s.kelas).filter(Boolean))].sort();
+            
             unique.forEach(k => {
                 select.innerHTML += `<option value="${k}">${k}</option>`;
             });
         }
 
         function loadSiswa() {
+            if (!dataLoaded) return;
+            
             const jenis = document.getElementById('jenis').value;
             const cfg = JENIS_MAP[jenis] || { program: '' };
             const kelasSelected = document.getElementById('kelas').value;
             const container = document.getElementById('siswaList');
 
-            if (cfg.mode !== 'checklist') { container.innerHTML = ''; return; }
+            if (cfg.mode !== 'checklist') { 
+                container.innerHTML = ''; 
+                return; 
+            }
 
             const daftar = masterData.siswa
                 .filter(s => s.program === cfg.program && s.kelas === kelasSelected)
@@ -307,7 +346,7 @@
 
             document.getElementById('totalSiswa').textContent = daftar.length;
 
-            daftar.forEach((nama, idx) => {
+            daftar.forEach((nama) => {
                 const div = document.createElement('div');
                 div.className = 'siswa-item flex items-center gap-3 p-3 bg-white rounded-lg border border-slate-200 hover:border-primary transition-colors cursor-pointer';
                 div.innerHTML = `
@@ -344,6 +383,12 @@
 
         async function submitForm(e) {
             e.preventDefault();
+            
+            if (!dataLoaded) {
+                showNotification('error', 'Error', 'Data belum siap. Silakan tunggu hingga data selesai dimuat.');
+                return;
+            }
+            
             const jenis = document.getElementById('jenis').value;
             const cfg = JENIS_MAP[jenis] || { program: '', mode: 'manual' };
             const btn = document.getElementById('submitBtn');
@@ -371,7 +416,7 @@
                 mapel: document.getElementById('mapel').value,
                 guru: guru,
                 kelas: document.getElementById('kelas').value,
-                jp: document.getElementById('jp').value,
+                jp: parseInt(document.getElementById('jp').value) || 2,
                 siswaHadir: checked,
                 siswaTidakHadir: semua.filter(s => !checked.includes(s)),
                 siswaManual: document.getElementById('siswaManual').value
@@ -383,16 +428,20 @@
                     body: JSON.stringify(payload),
                     headers: { 'Content-Type': 'text/plain;charset=utf-8' }
                 });
+                
+                if (!response.ok) throw new Error('HTTP ' + response.status);
+                
                 const res = await response.json();
 
                 if (res.status === 'success') {
                     showNotification('success', 'Berhasil!', `Presensi tersimpan!<br>Hadir: ${res.totalHadir} | Tidak Hadir: ${res.totalTidakHadir}`);
                     resetForm();
                 } else {
-                    showNotification('error', 'Gagal', res.message);
+                    throw new Error(res.message || 'Gagal menyimpan');
                 }
             } catch (err) {
-                showNotification('error', 'Error', 'Terjadi kesalahan saat menyimpan');
+                console.error('Submit error:', err);
+                showNotification('error', 'Error', 'Terjadi kesalahan: ' + err.message);
             } finally {
                 btn.disabled = false;
                 btn.innerHTML = original;
@@ -403,8 +452,9 @@
         function resetForm() {
             document.getElementById('presensiForm').reset();
             document.getElementById('tanggal').valueAsDate = new Date();
-            ['mapel', 'guru', 'kelas'].forEach(f => { document.getElementById(f).disabled = true; });
-            currentMode = 'checklist';
+            document.getElementById('mapel').disabled = true;
+            document.getElementById('guru').disabled = true;
+            document.getElementById('kelas').disabled = true;
             show('field_mapel', true);
             show('guru_select_wrap', true);
             show('guru_manual_wrap', false);
@@ -420,10 +470,20 @@
         function showNotification(type, title, message) {
             const notif = document.getElementById('notification');
             notif.classList.remove('hidden');
-            const icon = type === 'success' ? '✅' : '❌';
-            document.getElementById('notifIcon').innerHTML = `<div class="text-xl">${icon}</div>`;
+            
+            const iconDiv = document.getElementById('notifIcon');
+            if (type === 'success') {
+                iconDiv.innerHTML = '<div class="w-8 h-8 bg-emerald-100 rounded-full flex items-center justify-center"><i data-lucide="check" class="w-5 h-5 text-emerald-600"></i></div>';
+            } else if (type === 'info') {
+                iconDiv.innerHTML = '<div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center"><i data-lucide="info" class="w-5 h-5 text-blue-600"></i></div>';
+            } else {
+                iconDiv.innerHTML = '<div class="w-8 h-8 bg-rose-100 rounded-full flex items-center justify-center"><i data-lucide="x" class="w-5 h-5 text-rose-600"></i></div>';
+            }
+            
             document.getElementById('notifTitle').textContent = title;
             document.getElementById('notifMessage').innerHTML = message;
+            icons();
+            
             setTimeout(closeNotification, 5000);
         }
 
