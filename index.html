@@ -15,6 +15,7 @@
     <style>
         body { font-family: 'Poppins', sans-serif; }
         select:disabled { opacity: 0.5; cursor: not-allowed; }
+        input[type="checkbox"] { accent-color: #059669; }
     </style>
 </head>
 <body class="bg-background text-slate-800 antialiased min-h-screen flex flex-col">
@@ -42,14 +43,13 @@
                     <h2 class="text-lg font-semibold text-slate-900">Informasi Presensi</h2>
                 </div>
 
-                <!-- Banner loading data -->
-                <div id="loadBanner" class="hidden mb-5 flex items-center gap-3 text-sm text-slate-600 bg-emerald-50 border border-emerald-200 rounded-xl px-4 py-3">
-                    <svg class="animate-spin h-4 w-4 text-primary" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                <!-- Banner status data -->
+                <div id="loadBanner" class="mb-5 flex items-center gap-3 text-sm text-slate-600 bg-emerald-50 border border-emerald-200 rounded-xl px-4 py-3">
+                    <svg id="loadSpinner" class="animate-spin h-4 w-4 text-primary" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
                     <span id="loadBannerText">Memuat data guru & siswa...</span>
                 </div>
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                    <!-- Jenis Presensi -->
                     <div class="sm:col-span-2">
                         <label class="block text-sm font-semibold text-slate-700 mb-2">Jenis Presensi <span class="text-rose-500">*</span></label>
                         <select id="jenis" required class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-primary focus:ring-2 focus:ring-emerald-200 outline-none bg-slate-50 font-medium">
@@ -65,42 +65,31 @@
                         </select>
                     </div>
 
-                    <!-- Tanggal -->
                     <div>
                         <label class="block text-sm font-semibold text-slate-700 mb-2">Tanggal <span class="text-rose-500">*</span></label>
                         <input type="date" id="tanggal" required class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-primary focus:ring-2 focus:ring-emerald-200 outline-none bg-slate-50">
                     </div>
 
-                    <!-- Jumlah JP -->
                     <div>
                         <label class="block text-sm font-semibold text-slate-700 mb-2">Jumlah JP <span class="text-rose-500">*</span></label>
                         <input type="number" id="jp" value="2" min="1" max="10" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-primary focus:ring-2 focus:ring-emerald-200 outline-none bg-slate-50">
                     </div>
 
-                    <!-- Mata Pelajaran (select + input manual) -->
                     <div>
                         <label class="block text-sm font-semibold text-slate-700 mb-2">Mata Pelajaran</label>
-                        <select id="mapel" disabled class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-primary focus:ring-2 focus:ring-emerald-200 outline-none bg-slate-50">
-                            <option value="" disabled selected>Pilih jenis presensi dulu</option>
-                        </select>
+                        <select id="mapel" disabled class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-primary focus:ring-2 focus:ring-emerald-200 outline-none bg-slate-50"><option value="" disabled selected>Pilih jenis presensi dulu</option></select>
                         <input type="text" id="mapel_manual" placeholder="Contoh: Fisika" class="hidden w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-primary focus:ring-2 focus:ring-emerald-200 outline-none bg-slate-50">
                     </div>
 
-                    <!-- Nama Guru (select + input manual) -->
                     <div>
                         <label class="block text-sm font-semibold text-slate-700 mb-2">Nama Guru <span class="text-rose-500">*</span></label>
-                        <select id="guru" disabled class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-primary focus:ring-2 focus:ring-emerald-200 outline-none bg-slate-50">
-                            <option value="" disabled selected>Pilih mapel dulu</option>
-                        </select>
+                        <select id="guru" disabled class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-primary focus:ring-2 focus:ring-emerald-200 outline-none bg-slate-50"><option value="" disabled selected>Pilih mapel dulu</option></select>
                         <input type="text" id="guru_manual" placeholder="Nama lengkap guru" class="hidden w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-primary focus:ring-2 focus:ring-emerald-200 outline-none bg-slate-50">
                     </div>
 
-                    <!-- Kelas (select + input manual) -->
                     <div class="sm:col-span-2">
                         <label class="block text-sm font-semibold text-slate-700 mb-2">Kelas</label>
-                        <select id="kelas" disabled class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-primary focus:ring-2 focus:ring-emerald-200 outline-none bg-slate-50">
-                            <option value="" disabled selected>Pilih jenis presensi dulu</option>
-                        </select>
+                        <select id="kelas" disabled class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-primary focus:ring-2 focus:ring-emerald-200 outline-none bg-slate-50"><option value="" disabled selected>Pilih jenis presensi dulu</option></select>
                         <input type="text" id="kelas_manual" placeholder="Contoh: 12 IPA 1" class="hidden w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-primary focus:ring-2 focus:ring-emerald-200 outline-none bg-slate-50">
                     </div>
                 </div>
@@ -117,8 +106,7 @@
                 </div>
 
                 <div class="mb-4 relative">
-                    <i data-lucide="search" class="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400 w-5 h-5"></i>
-                    <input type="text" id="searchSiswa" placeholder="Cari nama siswa..." class="w-full pl-10 pr-4 py-2 rounded-lg border border-slate-200 focus:border-primary focus:ring-2 focus:ring-emerald-200 outline-none">
+                    <input type="text" id="searchSiswa" placeholder="Cari nama siswa..." class="w-full px-4 py-2 rounded-lg border border-slate-200 focus:border-primary focus:ring-2 focus:ring-emerald-200 outline-none">
                 </div>
 
                 <div id="siswaList" class="space-y-2 max-h-96 overflow-y-auto p-2 border border-slate-100 rounded-xl bg-slate-50">
@@ -126,10 +114,7 @@
                 </div>
 
                 <div class="mt-5 pt-5 border-t border-slate-100">
-                    <label class="block text-sm font-semibold text-slate-700 mb-2">
-                        <i data-lucide="user-plus" class="w-4 h-4 inline mr-1"></i>
-                        Tambah Siswa Manual (pisahkan dengan koma)
-                    </label>
+                    <label class="block text-sm font-semibold text-slate-700 mb-2">Tambah Siswa Manual (pisahkan dengan koma)</label>
                     <textarea id="siswaManual" rows="2" placeholder="Contoh: Ahmad Fauzi, Budi Santoso" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-primary focus:ring-2 focus:ring-emerald-200 outline-none bg-slate-50 resize-none text-sm"></textarea>
                     <p class="text-xs text-slate-500 mt-1">* Siswa manual otomatis dianggap hadir</p>
                 </div>
@@ -146,13 +131,10 @@
                 </div>
             </div>
 
-            <!-- Tombol -->
             <div class="flex flex-col sm:flex-row gap-3">
-                <button type="button" id="resetBtn" class="flex-1 px-6 py-4 border-2 border-slate-200 text-slate-600 font-semibold rounded-xl hover:bg-slate-50 transition-all">
-                    <i data-lucide="rotate-ccw" class="w-5 h-5 inline mr-2"></i>Reset Form
-                </button>
+                <button type="button" id="resetBtn" class="flex-1 px-6 py-4 border-2 border-slate-200 text-slate-600 font-semibold rounded-xl hover:bg-slate-50 transition-all">Reset Form</button>
                 <button type="submit" id="submitBtn" class="flex-[2] bg-primary hover:bg-primaryDark text-white font-semibold py-4 px-6 rounded-xl shadow-lg shadow-emerald-200 transition-all flex items-center justify-center gap-2 disabled:opacity-50">
-                    <i data-lucide="save" class="w-5 h-5"></i><span>Simpan Presensi</span>
+                    <span>Simpan Presensi</span>
                 </button>
             </div>
         </form>
@@ -166,49 +148,60 @@
                 <h4 id="notifTitle" class="font-semibold text-sm mb-1"></h4>
                 <p id="notifMessage" class="text-sm text-slate-600"></p>
             </div>
-            <button onclick="closeNotification()" class="text-slate-400 hover:text-slate-600"><i data-lucide="x" class="w-4 h-4"></i></button>
+            <button type="button" onclick="closeNotification()" class="text-slate-400 hover:text-slate-600">✕</button>
         </div>
     </div>
 
     <script>
+        // ============ KONFIGURASI ============
         const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbydQLyp6LkW3Nvu1kyQ9v_n0FZfi-dAAzsoCCXEzUXZ18sUcYoljAmXxaPR5YTAK41QfQ/exec";
+        const INTENSIVE = ['TKA', 'SNBT', 'IUP', 'Ujian Mandiri'];
 
         let allData = {};
+        let dataReady = false;
         let currentMode = 'dropdown';
+        let pendingJenis = null;
 
-        lucide.createIcons();
-        document.getElementById('tanggal').valueAsDate = new Date();
+        // Ikon aman: tidak akan menghentikan script walau CDN gagal
+        function icons() { try { if (window.lucide) lucide.createIcons(); } catch (e) {} }
 
-        // ===== PRELOAD DATA SAAT HALAMAN DIBUKA =====
-        async function loadAllData() {
+        // ============ MUAT DATA OTOMATIS (dengan retry) ============
+        async function loadAllData(attempt) {
             const banner = document.getElementById('loadBanner');
-            const bannerText = document.getElementById('loadBannerText');
+            const text = document.getElementById('loadBannerText');
+            const spinner = document.getElementById('loadSpinner');
             banner.classList.remove('hidden');
-            bannerText.textContent = 'Memuat data guru & siswa...';
+            text.textContent = (attempt > 0) ? 'Mengulang memuat data...' : 'Memuat data guru & siswa...';
+
             try {
                 const res = await fetch(APPS_SCRIPT_URL + '?action=getAllData');
+                if (!res.ok) throw new Error('HTTP ' + res.status);
                 allData = await res.json();
+                dataReady = true;
                 banner.classList.add('hidden');
+
+                // Jika guru sudah memilih jenis sebelum data siap, terapkan sekarang
+                if (pendingJenis) { applyJenis(pendingJenis); pendingJenis = null; }
             } catch (e) {
-                bannerText.innerHTML = 'Gagal memuat data. <button type="button" onclick="loadAllData()" class="underline font-semibold text-emerald-700">Coba lagi</button>';
+                if (attempt < 2) {
+                    setTimeout(function(){ loadAllData(attempt + 1); }, 1500);
+                } else {
+                    spinner.classList.add('hidden');
+                    text.innerHTML = 'Gagal memuat data. <button type="button" onclick="retryLoad()" class="underline font-semibold text-emerald-700">Coba lagi</button>';
+                }
             }
         }
-        loadAllData();
 
-        // ===== EVENT LISTENERS =====
-        document.getElementById('jenis').addEventListener('change', handleJenisChange);
-        document.getElementById('mapel').addEventListener('change', handleMapelChange);
-        document.getElementById('kelas').addEventListener('change', handleKelasChange);
-        document.getElementById('searchSiswa').addEventListener('input', handleSearchSiswa);
-        document.getElementById('presensiForm').addEventListener('submit', handleSubmit);
-        document.getElementById('resetBtn').addEventListener('click', handleReset);
+        function retryLoad() {
+            const spinner = document.getElementById('loadSpinner');
+            spinner.classList.remove('hidden');
+            loadAllData(0);
+        }
 
-        function handleJenisChange() {
-            const jenis = this.value;
+        // ============ LOGIKA FORM ============
+        function applyJenis(jenis) {
             const d = allData[jenis];
-            const hasData = d && (d.mapel.length || d.kelas.length || d.guru.length);
-
-            if (hasData) {
+            if (d && (d.mapel.length || d.kelas.length || d.guru.length)) {
                 currentMode = 'dropdown';
                 setMode('dropdown');
                 populateSelect('mapel', d.mapel, 'Pilih Mapel...');
@@ -219,33 +212,40 @@
                 document.getElementById('mapel').disabled = false;
                 document.getElementById('kelas').disabled = false;
             } else {
-                // Jenis tanpa sheet data → input manual
                 currentMode = 'manual';
                 setMode('manual');
             }
             renderSiswaList([]);
         }
 
+        function handleJenisChange() {
+            const jenis = this.value;
+            if (!dataReady && INTENSIVE.indexOf(jenis) !== -1) {
+                // Data belum siap → simpan pilihan, terapkan otomatis saat data siap
+                pendingJenis = jenis;
+                showNotification('info', 'Info', 'Data masih dimuat, pilihan akan terisi otomatis sebentar lagi.');
+                return;
+            }
+            applyJenis(jenis);
+        }
+
         function handleMapelChange() {
             const jenis = document.getElementById('jenis').value;
-            const mapel = this.value;
             const d = allData[jenis] || { guru: [] };
-            // Filter guru sesuai mapel — INSTAN dari data yang sudah dimuat
-            const gurus = d.guru.filter(g => g.mapel === mapel).map(g => g.nama).sort();
+            const gurus = d.guru.filter(g => g.mapel === this.value).map(g => g.nama).sort();
             populateSelect('guru', gurus, 'Pilih Guru...');
             document.getElementById('guru').disabled = false;
         }
 
         function handleKelasChange() {
             const jenis = document.getElementById('jenis').value;
-            const kelas = this.value;
             const d = allData[jenis] || { siswa: [] };
-            const siswas = d.siswa.filter(s => s.kelas === kelas).map(s => s.nama).sort();
+            const siswas = d.siswa.filter(s => s.kelas === this.value).map(s => s.nama).sort();
             renderSiswaList(siswas);
         }
 
         function setMode(mode) {
-            ['mapel', 'guru', 'kelas'].forEach(f => {
+            ['mapel', 'guru', 'kelas'].forEach(function(f) {
                 const sel = document.getElementById(f);
                 const inp = document.getElementById(f + '_manual');
                 if (mode === 'dropdown') { sel.classList.remove('hidden'); inp.classList.add('hidden'); }
@@ -256,13 +256,14 @@
         function populateSelect(id, list, placeholder) {
             const sel = document.getElementById(id);
             sel.innerHTML = '<option value="" disabled selected>' + placeholder + '</option>';
-            list.forEach(v => {
+            list.forEach(function(v) {
                 const o = document.createElement('option');
                 o.value = v; o.textContent = v;
                 sel.appendChild(o);
             });
         }
 
+        // ============ DAFTAR SISWA (checkbox asli, dijamin bisa diklik) ============
         function renderSiswaList(siswaList) {
             const container = document.getElementById('siswaList');
             container.innerHTML = '';
@@ -274,44 +275,15 @@
             }
             document.getElementById('totalSiswa').textContent = siswaList.length;
 
-            siswaList.forEach((siswa, index) => {
-                const div = document.createElement('div');
-                div.className = 'siswa-item flex items-center gap-3 p-3 bg-white rounded-lg border border-slate-200 hover:border-primary transition-colors cursor-pointer';
-                div.innerHTML = `
-                    <label class="flex items-center gap-3 flex-1 cursor-pointer">
-                        <input type="checkbox" name="siswaHadir" value="${siswa}" class="sr-only" onchange="updateStatistik()" id="siswa_${index}">
-                        <div class="w-5 h-5 border-2 border-slate-300 rounded flex items-center justify-center transition-all checkbox-box">
-                            <i data-lucide="check" class="w-3.5 h-3.5 text-white opacity-0 check-icon"></i>
-                        </div>
-                        <span class="font-medium text-slate-700">${siswa}</span>
-                    </label>`;
-                div.addEventListener('click', (e) => {
-                    if (e.target.type !== 'checkbox') {
-                        const cb = div.querySelector('input[type="checkbox"]');
-                        cb.checked = !cb.checked;
-                        updateCheckboxUI(cb);
-                        updateStatistik();
-                    }
-                });
-                div.querySelector('input').addEventListener('change', function(){ updateCheckboxUI(this); });
-                container.appendChild(div);
+            siswaList.forEach(function(siswa) {
+                const label = document.createElement('label');
+                label.className = 'siswa-item flex items-center gap-3 p-3 bg-white rounded-lg border border-slate-200 hover:border-primary transition-colors cursor-pointer';
+                label.innerHTML =
+                    '<input type="checkbox" name="siswaHadir" value="' + siswa + '" onchange="updateStatistik()" class="w-5 h-5 rounded cursor-pointer flex-shrink-0">' +
+                    '<span class="font-medium text-slate-700">' + siswa + '</span>';
+                container.appendChild(label);
             });
-            lucide.createIcons();
             updateStatistik();
-        }
-
-        function updateCheckboxUI(cb) {
-            const box = cb.parentElement.querySelector('.checkbox-box');
-            const icon = box.querySelector('.check-icon');
-            if (cb.checked) { box.classList.add('bg-primary', 'border-primary'); icon.classList.remove('opacity-0'); }
-            else { box.classList.remove('bg-primary', 'border-primary'); icon.classList.add('opacity-0'); }
-        }
-
-        function handleSearchSiswa() {
-            const term = this.value.toLowerCase();
-            document.querySelectorAll('.siswa-item').forEach(item => {
-                item.style.display = item.querySelector('span').textContent.toLowerCase().includes(term) ? 'flex' : 'none';
-            });
         }
 
         function updateStatistik() {
@@ -321,6 +293,14 @@
             document.getElementById('statTidakHadir').textContent = total - hadir;
         }
 
+        function handleSearchSiswa() {
+            const term = this.value.toLowerCase();
+            document.querySelectorAll('.siswa-item').forEach(function(item) {
+                item.style.display = item.querySelector('span').textContent.toLowerCase().indexOf(term) !== -1 ? 'flex' : 'none';
+            });
+        }
+
+        // ============ SUBMIT ============
         function getFieldValue(field) {
             if (currentMode === 'dropdown') return document.getElementById(field).value || '';
             return document.getElementById(field + '_manual').value || '';
@@ -336,7 +316,7 @@
 
             const siswaHadir = Array.from(document.querySelectorAll('input[name="siswaHadir"]:checked')).map(cb => cb.value);
             const semuaSiswa = Array.from(document.querySelectorAll('.siswa-item input[name="siswaHadir"]')).map(cb => cb.value);
-            const siswaTidakHadir = semuaSiswa.filter(s => !siswaHadir.includes(s));
+            const siswaTidakHadir = semuaSiswa.filter(s => siswaHadir.indexOf(s) === -1);
 
             const formData = {
                 jenis: document.getElementById('jenis').value,
@@ -345,18 +325,19 @@
                 guru: guru,
                 kelas: getFieldValue('kelas'),
                 jp: document.getElementById('jp').value,
-                siswaHadir, siswaTidakHadir,
+                siswaHadir: siswaHadir,
+                siswaTidakHadir: siswaTidakHadir,
                 siswaManual: document.getElementById('siswaManual').value
             };
 
             submitBtn.disabled = true;
-            submitBtn.innerHTML = '<svg class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg><span>Menyimpan...</span>';
+            submitBtn.innerHTML = '<span>Menyimpan...</span>';
 
             try {
                 const res = await fetch(APPS_SCRIPT_URL, { method: 'POST', body: JSON.stringify(formData) });
                 const result = await res.json();
                 if (result.status === 'success') {
-                    showNotification('success', 'Berhasil!', `Presensi tersimpan!<br>Hadir: ${result.totalHadir} | Tidak Hadir: ${result.totalTidakHadir}`);
+                    showNotification('success', 'Berhasil!', 'Presensi tersimpan!<br>Hadir: ' + result.totalHadir + ' | Tidak Hadir: ' + result.totalTidakHadir);
                     handleReset();
                 } else {
                     showNotification('error', 'Gagal', result.message);
@@ -366,33 +347,53 @@
             } finally {
                 submitBtn.disabled = false;
                 submitBtn.innerHTML = original;
-                lucide.createIcons();
             }
         }
 
         function handleReset() {
             document.getElementById('presensiForm').reset();
-            document.getElementById('tanggal').valueAsDate = new Date();
-            ['mapel', 'guru', 'kelas'].forEach(f => { document.getElementById(f).disabled = true; });
-            setMode('dropdown');
+            try { document.getElementById('tanggal').valueAsDate = new Date(); } catch (e) {}
+            ['mapel', 'guru', 'kelas'].forEach(function(f) { document.getElementById(f).disabled = true; });
             currentMode = 'dropdown';
+            setMode('dropdown');
             renderSiswaList([]);
         }
 
+        // ============ NOTIFIKASI ============
         function showNotification(type, title, message) {
             const notif = document.getElementById('notification');
             notif.classList.remove('hidden');
-            document.getElementById('notifIcon').innerHTML = type === 'success'
-                ? '<div class="w-8 h-8 bg-emerald-100 rounded-full flex items-center justify-center"><i data-lucide="check" class="w-5 h-5 text-emerald-600"></i></div>'
-                : '<div class="w-8 h-8 bg-rose-100 rounded-full flex items-center justify-center"><i data-lucide="x" class="w-5 h-5 text-rose-600"></i></div>';
+            const icon = type === 'success' ? '✅' : (type === 'info' ? 'ℹ️' : '❌');
+            document.getElementById('notifIcon').innerHTML = '<div class="text-xl">' + icon + '</div>';
             document.getElementById('notifTitle').textContent = title;
             document.getElementById('notifMessage').innerHTML = message;
-            lucide.createIcons();
             setTimeout(closeNotification, 5000);
         }
 
         function closeNotification() {
             document.getElementById('notification').classList.add('hidden');
+        }
+
+        // ============ INISIALISASI (aman, pakai try-catch per bagian) ============
+        function init() {
+            icons();
+            try { document.getElementById('tanggal').valueAsDate = new Date(); } catch (e) {}
+            try {
+                document.getElementById('jenis').addEventListener('change', handleJenisChange);
+                document.getElementById('mapel').addEventListener('change', handleMapelChange);
+                document.getElementById('kelas').addEventListener('change', handleKelasChange);
+                document.getElementById('searchSiswa').addEventListener('input', handleSearchSiswa);
+                document.getElementById('presensiForm').addEventListener('submit', handleSubmit);
+                document.getElementById('resetBtn').addEventListener('click', handleReset);
+            } catch (e) { console.error(e); }
+            // LANGSUNG muat data saat halaman terbuka
+            loadAllData(0);
+        }
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', init);
+        } else {
+            init();
         }
     </script>
 </body>
